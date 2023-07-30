@@ -22,25 +22,31 @@ class Post(BaseModel):
 #     return {'message': 'welcome to root'}
 
 
-@app.get('/posts')
+@app.get("/posts")
 async def get_posts():
-    return {'data': posts}
+    return {"data": posts}
 
 
-@app.get('/posts/{post_id}')
-async def get_post(post_id):
+@app.get("/posts/{post_id}")
+async def get_post(post_id: str):
     post = get_post_by_id(posts, str(post_id))
-    return {'data': post}
+    return {"data": post}
 
 
-@app.post('/posts')
+@app.post("/posts")
 async def create_post(post: Post):
     post = post.model_dump()
-    if post['post_id'] is None:
-        post['post_id'] = randrange(0, 1000)
+    if post["post_id"] is None:
+        post["post_id"] = randrange(0, 1000)
     posts.append(post)
-    return {'data': post}
+    return {"data": post}
+
+
+@app.delete("/posts/{post_id}")
+async def delete_post(post_id: str):
+    post = get_post_by_id(posts, post_id)
+    print(post, post_id)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
