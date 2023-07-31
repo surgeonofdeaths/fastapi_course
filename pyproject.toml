@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "fastapi-api-development-course-19h"
+version = "0.1.0"
+description = ""
+authors = ["Artem Holodyr <artemmholodyr@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fastapi_api_development_course_19h"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.100.1"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
