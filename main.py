@@ -10,10 +10,11 @@ app = FastAPI()
 posts: list[dict] = []
 
 with psycopg.connect(
-        host="localhost",
-        database="fastapi_course",
-        user="postgres",
-        password="firethemonkey") as conn:
+    host="localhost",
+    database="fastapi_course",
+    user="postgres",
+    password="firethemonkey",
+) as conn:
     with conn.cursor() as cur:
         cur.execute("SELECT * FROM post")
         cur.fetchone()
