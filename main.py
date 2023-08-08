@@ -1,11 +1,23 @@
 from fastapi import FastAPI, Response, status, HTTPException
+
 import uvicorn
+import psycopg
 
 from utils import get_post_by_id, delete_post_by_id, create_post_with_id
 from models import Post
 
 app = FastAPI()
 posts: list[dict] = []
+
+with psycopg.connect(
+        host="localhost",
+        database="fastapi_course",
+        user="postgres",
+        password="firethemonkey") as conn:
+    with conn.cursor() as cur:
+        cur.execute("SELECT * FROM post")
+        cur.fetchone()
+        conn.commit()
 
 
 @app.get("/posts")
@@ -23,9 +35,7 @@ async def create_post(post: Post):
 async def get_post(post_id: int):
     post = get_post_by_id(posts, post_id)
     if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="not found")
     return {"data": post[1]}
 
 
@@ -37,9 +47,9 @@ async def delete_post(post_id: int):
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with {post_id} doesn't exist",
-        )
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"post with {post_id} doesn't exist",
+    )
 
 
 @app.put("/posts/{post_id}")
