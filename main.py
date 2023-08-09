@@ -36,7 +36,10 @@ async def create_post(post: Post):
 async def get_post(post_id: int):
     post = get_post_by_id(posts, post_id)
     if not post:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="not found",
+        )
     return {"data": post[1]}
 
 
