@@ -3,7 +3,9 @@ from models import Post
 from random import randrange
 
 
-def get_post_by_id(posts: list[dict], post_id: int | str) -> tuple[int, dict] | dict:
+def get_post_by_id(
+        posts: list[dict],
+        post_id: int | str) -> tuple[int, dict] | dict:
     post = [
         (i, item) for i, item in enumerate(posts) if item["post_id"] == post_id
     ]
@@ -20,8 +22,8 @@ def create_post_with_id(posts: list[dict], post: Post) -> dict:
 
 
 def delete_post_by_id(posts: list[dict], post_id: int) -> bool:
-    f"""
-    returns False if post with post_id {post_id} doesn't exist
+    """
+    returns False if post with 'post_id' doesn't exist
     returns True if post has been successfully deleted
     """
 
