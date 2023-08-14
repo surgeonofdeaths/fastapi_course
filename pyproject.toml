@@ -10,6 +10,7 @@ packages = [{include = "fastapi_api_development_course_19h"}]
 python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.100.1"}
 psycopg = {extras = ["binary"], version = "^3.1.10"}
+sqlalchemy = "^2.0.19"
 
 [build-system]
 requires = ["poetry-core"]
