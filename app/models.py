@@ -15,3 +15,10 @@ class Post(Base):
         nullable=False,
         server_default=text(text="NOW()"),
     )
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    email = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)

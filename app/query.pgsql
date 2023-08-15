@@ -25,4 +25,4 @@ CREATE TABLE IF NOT EXISTS posts
 );
 
 DELETE FROM posts
-WHERE id IN (10, 11)
+WHERE title LIKE 'so much%'

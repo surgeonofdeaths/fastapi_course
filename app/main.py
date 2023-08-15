@@ -13,39 +13,22 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-# while True:
-#     try:
-#         conn = psycopg.connect(
-#             host="localhost",
-#             dbname="fastapi_course",
-#             user="postgres",
-#             password="firethemonkey",
-#             row_factory=dict_row,
-#         )
-#         cur = conn.cursor()
-#         break
-#     except Exception as err:
-#         print("connecting to the database failed")
-#         print(err)
-#         time.sleep(2)
-
-
-@app.get("/posts")
+@app.get("/posts", response_model=list[schemas.PostResponse])
 async def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
-    return {"data": posts}
+    return posts
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", response_model=schemas.PostResponse, status_code=status.HTTP_201_CREATED)
 async def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**post.model_dump())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    return {"data": new_post}
+    return new_post
 
 
-@app.get("/posts/{post_id}")
+@app.get("/posts/{post_id}", response_model=schemas.PostResponse)
 async def get_post(post_id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
 
@@ -54,7 +37,7 @@ async def get_post(post_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id {post_id} doesn't exist",
         )
-    return {"post_detail": post}
+    return post
 
 
 @app.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -71,12 +54,12 @@ async def delete_post(post_id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@app.put("/posts/{post_id}")
+@app.put("/posts/{post_id}", response_model=schemas.PostResponse)
 async def update_post(post_id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):
     post_query = db.query(models.Post).filter(models.Post.id == post_id)
-    return_post = post_query.first()
+    updated_post = post_query.first()
 
-    if not return_post:
+    if not updated_post:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with post_id {post_id} not found",
@@ -86,8 +69,8 @@ async def update_post(post_id: int, post: schemas.PostCreate, db: Session = Depe
         synchronize_session=False,
     )
     db.commit()
-    db.refresh(return_post)
-    return {'updated_post': return_post}
+    db.refresh(updated_post)
+    return updated_post
 
 
 if __name__ == "__main__":

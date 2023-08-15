@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class PostBase(BaseModel):
@@ -9,3 +10,12 @@ class PostBase(BaseModel):
 
 class PostCreate(PostBase):
     pass
+
+
+class PostResponse(PostBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        """var['property']; var.property"""
+        orm_mode = True
