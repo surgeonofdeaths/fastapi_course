@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 
@@ -18,4 +18,16 @@ class PostResponse(PostBase):
 
     class Config:
         """var['property']; var.property"""
-        orm_mode = True
+        from_attributes = True
+
+
+class UserBase(BaseModel):
+    email: EmailStr
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class UserResponse(UserBase):
+    created_at: datetime

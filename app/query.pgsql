@@ -26,3 +26,13 @@ CREATE TABLE IF NOT EXISTS posts
 
 DELETE FROM posts
 WHERE title LIKE 'so much%'
+
+-- Users
+SELECT * FROM users;
+
+INSERT INTO users (email, password)
+VALUES 
+    ('email@gmail.com', '1234'),
+    ('gmail@gmail.com', '12345'),
+    ('test@gmail.com', '12flakjd4')
+RETURNING *;
