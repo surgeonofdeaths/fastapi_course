@@ -1,9 +1,9 @@
 SELECT * FROM posts;
 
-INSERT INTO posts (title, content)
+INSERT INTO posts (title, content, owner_id)
 VALUES 
-    ('vim creator died', '3 august vim creator passed off'),
-    ('I use Arch, btw', 'thats so coooool')
+    ('vim creator died', '3 august vim creator passed off', 17),
+    ('I use Arch, btw', 'thats so coooool', 17)
 RETURNING *; 
 
 UPDATE posts
@@ -24,15 +24,20 @@ CREATE TABLE IF NOT EXISTS posts
     PRIMARY KEY (id)
 );
 
-DELETE FROM posts
-WHERE title LIKE 'so much%'
+DELETE FROM posts;
 
--- Users
 SELECT * FROM users;
+SELECT * FROM posts;
 
 INSERT INTO users (email, password)
 VALUES 
-    ('email@gmail.com', '1234'),
-    ('gmail@gmail.com', '12345'),
-    ('test@gmail.com', '12flakjd4')
-RETURNING *;
+    ('email@gmail.com', '1234')
+--     ('gmail@gmail.com', '12345'),
+--     ('test@gmail.com', '12flakjd4')
+-- RETURNING *;
+
+SELECT * FROM posts
+WHERE owner_id=17;
+
+SELECT * FROM posts p
+JOIN users u ON p.owner_id=u.id;
