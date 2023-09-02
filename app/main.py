@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 
+from app.routers import post, user, auth
+from .config import get_settings
 from .database import engine
 from . import models
-from app.routers import post, user, auth
 
+print(get_settings())
 # make migrations
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
