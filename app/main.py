@@ -5,7 +5,6 @@ from .config import get_settings
 from .database import engine
 from . import models
 
-print(get_settings())
 # make migrations
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
