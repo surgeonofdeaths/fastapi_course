@@ -6,7 +6,8 @@ class Settings(BaseSettings):
     DB_USERNAME: str = 'postgres'
     DB_PASSWORD: str = 'localhost'
     DB_HOSTNAME: str
-    DB_POST: str
+    DB_PORT: int
+    DB_NAME: str
     SECRET_KEY: str = 'fjklasjdflk34'
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE: int
@@ -21,4 +22,3 @@ def get_settings():
 
 
 settings = get_settings()
-print(settings.DB_PASSWORD, settings.DB_USERNAME)

@@ -24,20 +24,18 @@ CREATE TABLE IF NOT EXISTS posts
     PRIMARY KEY (id)
 );
 
-DELETE FROM posts;
+DELETE FROM votes;
 
 SELECT * FROM users;
 SELECT * FROM posts;
+SELECT * FROM votes;
 
-INSERT INTO users (email, password)
-VALUES 
-    ('email@gmail.com', '1234')
---     ('gmail@gmail.com', '12345'),
---     ('test@gmail.com', '12flakjd4')
--- RETURNING *;
-
-SELECT * FROM posts
-WHERE owner_id=17;
-
-SELECT * FROM posts p
-JOIN users u ON p.owner_id=u.id;
+CREATE TABLE IF NOT EXISTS votes (
+    post_id INT NOT NULL ,
+    user_id INT NOT NULL,
+    vote_value INT NOT NULL CHECK (vote_value = 1 OR vote_value = -1) DEFAULT 1,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, post_id)
+);

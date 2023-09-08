@@ -1,5 +1,12 @@
 from sqlalchemy import (
-    TIMESTAMP, Column, Integer, String, Boolean, ForeignKey, text
+    TIMESTAMP,
+    Column,
+    Integer,
+    String,
+    Boolean,
+    ForeignKey,
+    text,
+    CheckConstraint,
 )
 from sqlalchemy.orm import relationship
 
@@ -21,7 +28,7 @@ class Post(Base):
     owner_id = Column(
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
-    owner = relationship('User')
+    owner = relationship("User")
 
 
 class User(Base):
@@ -32,4 +39,32 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("NOW()")
+    )
+
+
+class Vote(Base):
+    __tablename__ = "votes"
+
+    post_id = Column(
+        Integer,
+        ForeignKey("posts.id", ondelete="CASCADE"),
+        primary_key=True,
+        nullable=False,
+    )
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        primary_key=True,
+        nullable=False,
+    )
+    vote_value = Column(
+        Integer,
+        CheckConstraint("vote_value=1 OR vote_value=-1"),
+        server_default='1',
+        nullable=False,
+    )
+    created_at = Column(
+        TIMESTAMP(timezone=True),
+        server_default=text("NOW()"),
+        nullable=False,
     )
