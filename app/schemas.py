@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from enum import IntEnum
 
 
 class UserBase(BaseModel):
@@ -38,20 +39,6 @@ class Post(PostBase):
     owner_id: int
     owner: UserResponse
 
-    # class Config:
-    #     """var['property']; var.property"""
-    #     from_attributes = True
-
-
-# class PostTest(PostBase):
-#     id: int
-#     title: str
-#     content: str
-#     published: bool
-#     created_at: datetime
-#     owner_id: int
-#     owner: UserResponse
-
 
 class Token(BaseModel):
     access_token: str
@@ -60,3 +47,15 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: int | None = None
+
+
+class VoteValue(IntEnum):
+    positive_vote: 1
+    negative_vote: -1
+
+
+class Vote(BaseModel):
+    post_id: int
+    user_id: int
+    vote_value: VoteValue = VoteValue(1)
+    created_at: datetime

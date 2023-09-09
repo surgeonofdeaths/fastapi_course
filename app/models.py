@@ -1,13 +1,5 @@
-from sqlalchemy import (
-    TIMESTAMP,
-    Column,
-    Integer,
-    String,
-    Boolean,
-    ForeignKey,
-    text,
-    CheckConstraint,
-)
+from sqlalchemy import (TIMESTAMP, Boolean, CheckConstraint, Column,
+                        ForeignKey, Integer, String, text)
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -53,14 +45,14 @@ class Vote(Base):
     )
     user_id = Column(
         Integer,
-        ForeignKey("users.id", ondelete="CASCADE"),
+        ForeignKey("use's'id", ondelete="CASCADE"),
         primary_key=True,
         nullable=False,
     )
     vote_value = Column(
         Integer,
         CheckConstraint("vote_value=1 OR vote_value=-1"),
-        server_default='1',
+        server_default="1",
         nullable=False,
     )
     created_at = Column(
